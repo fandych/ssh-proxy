@@ -9,7 +9,7 @@ import java.util.Set;
  * @description:
  * @create 2018-08-10 15:34
  **/
-public class SshProxyConfig1 {
+public class SshProxyConfig {
 
     public static final String AUTH_PWD = "PWD";
     public static final String AUTH_PRK = "PRK";

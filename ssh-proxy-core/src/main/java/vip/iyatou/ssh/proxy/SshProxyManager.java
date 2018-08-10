@@ -31,7 +31,7 @@ public class SshProxyManager {
     private Map<String, String> portMapping = new HashMap<>();
 
 
-    public synchronized static SshProxyManager getSSHProxyManager(List<SshProxyConfig1> configs) throws JSchException {
+    public synchronized static SshProxyManager getSSHProxyManager(List<SshProxyConfig> configs) throws JSchException {
         sshProxyManager = getSSHProxyManager();
         sshProxyManager.addConfig(configs);
         return sshProxyManager;
@@ -50,13 +50,13 @@ public class SshProxyManager {
         }
     }
 
-    public void addConfig(List<SshProxyConfig1> configs) throws JSchException {
-        for (SshProxyConfig1 config : configs) {
+    public void addConfig(List<SshProxyConfig> configs) throws JSchException {
+        for (SshProxyConfig config : configs) {
             addConfig(config);
         }
     }
 
-    public void addConfig(SshProxyConfig1 config) throws JSchException {
+    public void addConfig(SshProxyConfig config) throws JSchException {
         JSch jSch = new JSch();
         Session session;
         if (config.isPrivateKeyAuth()) {
@@ -80,7 +80,7 @@ public class SshProxyManager {
         }
     }
 
-    private Session connectTunnelWithPrivateKey(JSch jSch, SshProxyConfig1 config) throws JSchException {
+    private Session connectTunnelWithPrivateKey(JSch jSch, SshProxyConfig config) throws JSchException {
         String path = config.getPrivateKeyPath();
         if (path.startsWith(CLASSPATH)) {
             path = path.replace(CLASSPATH, NONE);
@@ -95,7 +95,7 @@ public class SshProxyManager {
         return session;
     }
 
-    private Session connectTunnelWithPassword(JSch jSch, SshProxyConfig1 config) throws JSchException {
+    private Session connectTunnelWithPassword(JSch jSch, SshProxyConfig config) throws JSchException {
         Session session = jSch.getSession(config.getUsername(), config.getHost(), config.getPort());
         session.setPassword(config.getPassword());
         session.setUserInfo(new TunnelUserInfo());
