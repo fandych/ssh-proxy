@@ -1,6 +1,6 @@
 package vip.iyatou.ssh.proxy;
 
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -22,7 +22,7 @@ public class SshProxyConfig {
     private String privateKeyPath;
     private Integer timeout = 1000;
     private int keepAliveInterval = 25;
-    private Set<HostProxyInfo> hostProxyInfos;
+    private Set<HostProxyInfo> hostProxyInfos = new HashSet<>();
 
     public String getHost() {
         return host;
