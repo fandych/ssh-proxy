@@ -24,7 +24,9 @@ config.setPrivateKeyPath("path");
 ##### 本地磁盘路径: _path=/home/username/.ssh/id_rsa_
 ##### 在项目Resource下: _path=classpath: id_rsa_
 
+#### 目标服务器配置
 
+待续...........
 
 
 

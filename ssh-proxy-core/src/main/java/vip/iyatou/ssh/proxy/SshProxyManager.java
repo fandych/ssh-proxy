@@ -28,10 +28,10 @@ public class SshProxyManager {
     private static SshProxyManager sshProxyManager = null;
 
     private Set<Session> sessions = new HashSet<>();
-    private Map<String, Integer> portMapping = new HashMap<>();
+    private Map<String, String> portMapping = new HashMap<>();
 
 
-    public synchronized static SshProxyManager getSSHProxyManager(List<SSHProxyConfig> configs) throws JSchException {
+    public synchronized static SshProxyManager getSSHProxyManager(List<SshProxyConfig> configs) throws JSchException {
         sshProxyManager = getSSHProxyManager();
         sshProxyManager.addConfig(configs);
         return sshProxyManager;
@@ -50,13 +50,13 @@ public class SshProxyManager {
         }
     }
 
-    public void addConfig(List<SSHProxyConfig> configs) throws JSchException {
-        for (SSHProxyConfig config : configs) {
+    public void addConfig(List<SshProxyConfig> configs) throws JSchException {
+        for (SshProxyConfig config : configs) {
             addConfig(config);
         }
     }
 
-    public void addConfig(SSHProxyConfig config) throws JSchException {
+    public void addConfig(SshProxyConfig config) throws JSchException {
         JSch jSch = new JSch();
         Session session;
         if (config.isPrivateKeyAuth()) {
@@ -64,23 +64,23 @@ public class SshProxyManager {
         } else {
             session = connectTunnelWithPassword(jSch, config);
         }
-        setForward(session, config.getProxyHosts());
+        setForward(session, config.getHostProxyInfos());
         sessions.add(session);
     }
 
 
-    private void setForward(final Session session, Map<String, Integer> proxyHosts) throws JSchException {
-        Set<String> hosts = proxyHosts.keySet();
-
-        for (String host : hosts) {
-            int localPort = SocketUtils.findAvailableTcpPort();
-            int remotePort = proxyHosts.get(host);
-            session.setPortForwardingL(localPort, host, remotePort);
-            portMapping.put(String.format(HOST_PORT, host, remotePort), localPort);
+    private void setForward(final Session session, Set<HostProxyInfo> hostProxyInfos) throws JSchException {
+        for (HostProxyInfo proxyInfo : hostProxyInfos) {
+            int localPort = proxyInfo.getLocalPort();
+            if (proxyInfo.useRandomPort()) {
+                localPort = SocketUtils.findAvailableTcpPort();
+            }
+            session.setPortForwardingL(proxyInfo.getLocalHost(), localPort, proxyInfo.getRemoteHost(), proxyInfo.getRemotePort());
+            portMapping.put(String.format(HOST_PORT, proxyInfo.getRemoteHost(), proxyInfo.getRemotePort()), String.format(HOST_PORT, proxyInfo.getLocalHost(), localPort));
         }
     }
 
-    private Session connectTunnelWithPrivateKey(JSch jSch, SSHProxyConfig config) throws JSchException {
+    private Session connectTunnelWithPrivateKey(JSch jSch, SshProxyConfig config) throws JSchException {
         String path = config.getPrivateKeyPath();
         if (path.startsWith(CLASSPATH)) {
             path = path.replace(CLASSPATH, NONE);
@@ -95,7 +95,7 @@ public class SshProxyManager {
         return session;
     }
 
-    private Session connectTunnelWithPassword(JSch jSch, SSHProxyConfig config) throws JSchException {
+    private Session connectTunnelWithPassword(JSch jSch, SshProxyConfig config) throws JSchException {
         Session session = jSch.getSession(config.getUsername(), config.getHost(), config.getPort());
         session.setPassword(config.getPassword());
         session.setUserInfo(new TunnelUserInfo());
@@ -112,17 +112,17 @@ public class SshProxyManager {
         session.setDaemonThread(true);
     }
 
-    public Integer getLocalPort(String host, int port) {
+    public String getLocalHostAndPort(String host, int port) {
         return portMapping.get(String.format(HOST_PORT, host, port));
     }
 
     public String getLocalUrl(String urlStr) throws MalformedURLException {
         URL url = new URL(urlStr);
-        Integer localPort = getSSHProxyManager().getLocalPort(url.getHost(), url.getPort());
-        if (null == localPort) {
+        String localHostAndPort = getSSHProxyManager().getLocalHostAndPort(url.getHost(), url.getPort());
+        if (null == localHostAndPort) {
             return urlStr;
         }
-        return urlStr.replace(url.getHost(), LOCALHOST).replace(String.valueOf(url.getPort()), String.valueOf(localPort));
+        return urlStr.replace(String.format(HOST_PORT, url.getHost(), url.getPort()), LOCALHOST);
     }
 
     private static class TunnelUserInfo implements UserInfo {

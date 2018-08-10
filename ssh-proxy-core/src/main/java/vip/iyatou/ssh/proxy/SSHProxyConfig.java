@@ -1,6 +1,7 @@
 package vip.iyatou.ssh.proxy;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Fandy
@@ -8,7 +9,7 @@ import java.util.Map;
  * @description:
  * @create 2018-08-10 15:34
  **/
-public class SSHProxyConfig {
+public class SshProxyConfig {
 
     public static final String AUTH_PWD = "PWD";
     public static final String AUTH_PRK = "PRK";
@@ -21,7 +22,7 @@ public class SSHProxyConfig {
     private String privateKeyPath;
     private Integer timeout = 1000;
     private int keepAliveInterval = 25;
-    private Map<String, Integer> proxyHosts;
+    private Set<HostProxyInfo> hostProxyInfos;
 
     public String getHost() {
         return host;
@@ -87,12 +88,12 @@ public class SSHProxyConfig {
         this.keepAliveInterval = keepAliveInterval;
     }
 
-    public Map<String, Integer> getProxyHosts() {
-        return proxyHosts;
+    public Set<HostProxyInfo> getHostProxyInfos() {
+        return hostProxyInfos;
     }
 
-    public void setProxyHosts(Map<String, Integer> proxyHosts) {
-        this.proxyHosts = proxyHosts;
+    public void setHostProxyInfos(Set<HostProxyInfo> hostProxyInfos) {
+        this.hostProxyInfos = hostProxyInfos;
     }
 
     public boolean isPrivateKeyAuth() {
