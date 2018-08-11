@@ -28,7 +28,6 @@ public class BasicDataSourceExample extends DatabaseProxyExample {
         basicDataSource.setUsername("ebuyuser");
         basicDataSource.setPassword("pwd!ebuy3");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-
         Connection connection = basicDataSource.getConnection();
         Statement statement = connection.createStatement();
 
