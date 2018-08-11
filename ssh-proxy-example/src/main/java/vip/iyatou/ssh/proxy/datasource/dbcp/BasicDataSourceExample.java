@@ -24,7 +24,7 @@ public class BasicDataSourceExample extends DatabaseProxyExample {
 
     static void connect() throws SQLException {
         BasicDataSource basicDataSource = new ProxyBasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://iyatou.vip:3306?useSSL=false");
+        basicDataSource.setUrl("jdbc:mysql://172.19.55.128:3306?useSSL=false");
         basicDataSource.setUsername("ebuyuser");
         basicDataSource.setPassword("pwd!ebuy3");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

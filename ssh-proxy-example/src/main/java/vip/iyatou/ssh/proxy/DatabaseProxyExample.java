@@ -18,7 +18,7 @@ public class DatabaseProxyExample {
     protected  static void setProxy() throws JSchException {
         HostProxyInfo hostProxyInfo = new HostProxyInfo();
 
-        hostProxyInfo.setRemoteHost("iyatou.vip");
+        hostProxyInfo.setRemoteHost("172.19.55.128");
         hostProxyInfo.setRemotePort(3306);
         hostProxyInfo.setLocalPort(3309);
 

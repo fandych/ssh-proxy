@@ -11,10 +11,8 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * The type Ssh proxy manager.
- *
  * @author Fandy
- */
+ **/
 @SuppressWarnings("unused")
 public class SshProxyManager {
 
@@ -35,24 +33,12 @@ public class SshProxyManager {
     private Map<String, String> portMapping = new HashMap<>();
 
 
-    /**
-     * Gets ssh proxy manager and init configs.
-     *
-     * @param configs the configs
-     * @return the ssh proxy manager
-     * @throws JSchException the j sch exception
-     */
     public synchronized static SshProxyManager getSSHProxyManager(List<SshProxyConfig> configs) throws JSchException {
         sshProxyManager = getSSHProxyManager();
         sshProxyManager.addConfig(configs);
         return sshProxyManager;
     }
 
-    /**
-     * Gets ssh proxy manager.
-     *
-     * @return the ssh proxy manager
-     */
     public synchronized static SshProxyManager getSSHProxyManager() {
         if (null == sshProxyManager) {
             sshProxyManager = new SshProxyManager();
@@ -60,33 +46,18 @@ public class SshProxyManager {
         return sshProxyManager;
     }
 
-    /**
-     * Shutdown.
-     */
     public synchronized void shutdown() {
         for (Session session : sessions) {
             session.disconnect();
         }
     }
 
-    /**
-     * Add config.
-     *
-     * @param configs the configs
-     * @throws JSchException the j sch exception
-     */
     public void addConfig(List<SshProxyConfig> configs) throws JSchException {
         for (SshProxyConfig config : configs) {
             addConfig(config);
         }
     }
 
-    /**
-     * Add config.
-     *
-     * @param config the config
-     * @throws JSchException the j sch exception
-     */
     public void addConfig(SshProxyConfig config) throws JSchException {
         JSch jSch = new JSch();
         Session session;
@@ -143,31 +114,21 @@ public class SshProxyManager {
         session.setDaemonThread(true);
     }
 
-    /**
-     * Gets local host and port.
-     *
-     * @param host the host
-     * @param port the port
-     * @return the local host and port
-     */
     public String getLocalHostAndPort(String host, int port) {
         return portMapping.get(String.format(HOST_PORT, host, port));
     }
 
-    /**
-     * Gets local url.
-     *
-     * @param urlStr the url str
-     * @return the local url
-     * @throws MalformedURLException the malformed url exception
-     */
-    public String getLocalUrl(String urlStr) throws MalformedURLException {
+    public String getLocalUrl(String urlString) throws MalformedURLException {
+        String urlStr = urlString;
+        if (urlString.startsWith(JDBC_URL_PREFIX)) {
+            urlStr = urlString.replace(JDBC_URL_PREFIX, NONE);
+        }
         URI uri = URI.create(urlStr);
         String localHostAndPort = getSSHProxyManager().getLocalHostAndPort(uri.getHost(), uri.getPort());
         if (null == localHostAndPort) {
-            return urlStr;
+            return urlString;
         }
-        return urlStr.replace(String.format(HOST_PORT, uri.getHost(), uri.getPort()), localHostAndPort);
+        return urlString.replace(String.format(HOST_PORT, uri.getHost(), uri.getPort()), localHostAndPort);
     }
 
     private static class TunnelUserInfo implements UserInfo {
