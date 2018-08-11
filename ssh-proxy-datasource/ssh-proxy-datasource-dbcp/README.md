@@ -1,4 +1,4 @@
 # dbcp2
 
-提供BasicDataSource
-与原dbcp2使用方式一样
+提供ProxyBasicDataSource
+与原BasicDataSource使用方式一样
