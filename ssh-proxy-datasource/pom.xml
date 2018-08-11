@@ -12,8 +12,8 @@
     <artifactId>ssh-proxy-datasource</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>ssh-proxy-datasource-c3p0</module>
         <module>ssh-proxy-datasource-dbcp</module>
+        <module>ssh-proxy-datasource-druid</module>
     </modules>
 
     <dependencies>

@@ -20,10 +20,9 @@ public class ProxyBasicDataSource extends BasicDataSource {
     public synchronized void setUrl(String url) {
         try {
             url = SshProxyManager.getSSHProxyManager().getLocalUrl(url);
-            super.setUrl(url);
         } catch (MalformedURLException e) {
-            super.setUrl(url);
             log.error(e);
         }
+        super.setUrl(url);
     }
 }
