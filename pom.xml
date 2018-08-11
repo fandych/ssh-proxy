@@ -11,6 +11,8 @@
     <modules>
         <module>ssh-proxy-core</module>
         <module>ssh-proxy-datasource</module>
+        <module>ssh-proxy-example</module>
+        <module>ssh-proxy-jedis</module>
     </modules>
 
     <dependencies>

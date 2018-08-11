@@ -46,7 +46,9 @@ SshProxyManager.getSSHProxyManager(Arrays.asList(config));
 SshProxyManager.getSSHProxyManager().shutdown();
 ```
 本机地址 192.168.1.2, 没有网络访问权限, 只能访问局域网内的192.168.1.5
+
 192.168.1.5 可以访问外网 www.github.com
+
 通过上面的代码设置便可以访问localhost:3306来访问www.github.com:3306
 
 
