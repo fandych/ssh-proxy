@@ -51,4 +51,14 @@ public class HostProxyInfo {
     public boolean useRandomPort() {
         return DEFAULT_PORT == getLocalPort();
     }
+
+    @Override
+    public String toString() {
+        return "HostProxyInfo{" +
+                "remoteHost='" + remoteHost + '\'' +
+                ", remotePort=" + remotePort +
+                ", localHost='" + localHost + '\'' +
+                ", localPort=" + localPort +
+                '}';
+    }
 }

@@ -99,4 +99,19 @@ public class SshProxyConfig {
     public boolean isPrivateKeyAuth() {
         return AUTH_PRK.equals(getAuthType());
     }
+
+    @Override
+    public String toString() {
+        return "SshProxyConfig{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                ", username='" + username + '\'' +
+                ", authType='" + authType + '\'' +
+                ", password='" + password + '\'' +
+                ", privateKeyPath='" + privateKeyPath + '\'' +
+                ", timeout=" + timeout +
+                ", keepAliveInterval=" + keepAliveInterval +
+                ", hostProxyInfos=" + hostProxyInfos +
+                '}';
+    }
 }

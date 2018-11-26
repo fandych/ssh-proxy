@@ -13,6 +13,7 @@
         <module>ssh-proxy-datasource</module>
         <module>ssh-proxy-example</module>
         <module>ssh-proxy-jedis</module>
+        <module>ssh-proxy-app</module>
     </modules>
 
     <dependencies>

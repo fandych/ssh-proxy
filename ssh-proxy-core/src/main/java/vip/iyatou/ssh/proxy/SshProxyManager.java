@@ -79,6 +79,7 @@ public class SshProxyManager {
             }
             session.setPortForwardingL(proxyInfo.getLocalHost(), localPort, proxyInfo.getRemoteHost(), proxyInfo.getRemotePort());
             portMapping.put(String.format(HOST_PORT, proxyInfo.getRemoteHost(), proxyInfo.getRemotePort()), String.format(HOST_PORT, proxyInfo.getLocalHost(), localPort));
+            System.out.println(String.format("%s:%d\t%s:%d", proxyInfo.getRemoteHost(), proxyInfo.getRemotePort(), proxyInfo.getLocalHost(), localPort));
         }
     }
 
