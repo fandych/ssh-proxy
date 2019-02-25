@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Hello world!
+ *
  * @author chqiang
  */
 public class App {
